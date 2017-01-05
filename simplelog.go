@@ -7,11 +7,12 @@ import (
 	"time"
 )
 
-// These are logger levels prefixes.
+// Logger levels prefixes and standard time format.
 const (
-	debug = "[DEBUG]"
-	info  = "[INFO]"
-	err   = "[ERROR]"
+	debug  = "[DEBUG]"
+	info   = "[INFO]"
+	err    = "[ERROR]"
+	format = "2006-02-01 15:04:05"
 )
 
 var (
@@ -22,21 +23,24 @@ var (
 	reset  = string([]byte{27, 91, 48, 109})
 )
 
-// SimpleLogger is a struct which holds the chosen output for the log.
+// SimpleLogger is a struct which holds the chosen output for the log
+// and timestamp format.
 type SimpleLogger struct {
-	output io.Writer
+	Output io.Writer
+	Format string
 }
 
 // InitLogger returns logger with standarized log format to use throughout the app.
 func InitLogger() *SimpleLogger {
 	return &SimpleLogger{
-		output: os.Stderr,
+		Output: os.Stderr,
+		Format: format,
 	}
 }
 
 func (l *SimpleLogger) print(msg, prefix, color string) {
-	t := time.Now().Format("2006-02-01 15:04:05")
-	fmt.Fprintf(l.output, "%s%7s%s [ %s ] %s\n", color, prefix, reset, t, msg)
+	t := time.Now().Format(l.Format)
+	fmt.Fprintf(l.Output, "%s%7s%s [ %s ] %s\n", color, prefix, reset, t, msg)
 }
 
 // Debug prints log with "[DEBUG]" prefix
