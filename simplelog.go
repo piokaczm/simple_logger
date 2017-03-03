@@ -45,6 +45,11 @@ func (l *SimpleLogger) print(msg, prefix, color string) {
 
 // Debug prints log with "[DEBUG]" prefix
 func (l *SimpleLogger) Debug(msg string) {
+	l.print(msg, debug, yellow)
+}
+
+// DebugWithLine prints log just like Debug would do, but appends filename and line where it was called
+func (l *SimpleLogger) DebugWithLine(msg string) {
 	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), debug, yellow)
 }
 
@@ -53,8 +58,18 @@ func (l *SimpleLogger) Info(msg string) {
 	l.print(msg, info, green)
 }
 
+// InfoWithLine prints log just like Info would do, but appends filename and line where it was called
+func (l *SimpleLogger) InfoWithLine(msg string) {
+	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), info, green)
+}
+
 // Error prints log with "[ERROR]" prefix
 func (l *SimpleLogger) Error(msg string) {
+	l.print(msg, err, red) // print file and line
+}
+
+// ErrorWithLine prints log just like Error would do, but appends filename and line where it was called
+func (l *SimpleLogger) ErrorWithLine(msg string) {
 	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), err, red) // print file and line
 }
 
