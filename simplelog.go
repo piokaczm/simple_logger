@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"runtime"
 	"time"
 )
 
@@ -44,7 +45,7 @@ func (l *SimpleLogger) print(msg, prefix, color string) {
 
 // Debug prints log with "[DEBUG]" prefix
 func (l *SimpleLogger) Debug(msg string) {
-	l.print(msg, debug, yellow)
+	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), debug, yellow)
 }
 
 // Info prints log with "[INFO]" prefix
@@ -54,5 +55,11 @@ func (l *SimpleLogger) Info(msg string) {
 
 // Error prints log with "[ERROR]" prefix
 func (l *SimpleLogger) Error(msg string) {
-	l.print(msg, err, red)
+	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), err, red) // print file and line
+}
+
+// funcCaller returns file and line of last call.
+func funcCaller() string {
+	_, f, line, _ := runtime.Caller(2)
+	return fmt.Sprintf("%s line %d", f, line)
 }
