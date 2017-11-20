@@ -38,39 +38,40 @@ func InitLogger() *SimpleLogger {
 	}
 }
 
-func (l *SimpleLogger) print(msg, prefix, color string) {
+func (l *SimpleLogger) print(msg, prefix, color string, args ...interface{}) {
 	t := time.Now().Format(l.Format)
+	msg = fmt.Sprintf(msg, args...)
 	fmt.Fprintf(l.Output, "%s%7s%s [ %s ] %s\n", color, prefix, reset, t, msg)
 }
 
 // Debug prints log with "[DEBUG]" prefix
-func (l *SimpleLogger) Debug(msg string) {
-	l.print(msg, debug, yellow)
+func (l *SimpleLogger) Debug(msg string, args ...interface{}) {
+	l.print(msg, debug, yellow, args...)
 }
 
 // DebugWithLine prints log just like Debug would do, but appends filename and line where it was called
-func (l *SimpleLogger) DebugWithLine(msg string) {
-	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), debug, yellow)
+func (l *SimpleLogger) DebugWithLine(msg string, args ...interface{}) {
+	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), debug, yellow, args...)
 }
 
 // Info prints log with "[INFO]" prefix
-func (l *SimpleLogger) Info(msg string) {
-	l.print(msg, info, green)
+func (l *SimpleLogger) Info(msg string, args ...interface{}) {
+	l.print(msg, info, green, args...)
 }
 
 // InfoWithLine prints log just like Info would do, but appends filename and line where it was called
-func (l *SimpleLogger) InfoWithLine(msg string) {
-	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), info, green)
+func (l *SimpleLogger) InfoWithLine(msg string, args ...interface{}) {
+	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), info, green, args...)
 }
 
 // Error prints log with "[ERROR]" prefix
-func (l *SimpleLogger) Error(msg string) {
-	l.print(msg, err, red) // print file and line
+func (l *SimpleLogger) Error(msg string, args ...interface{}) {
+	l.print(msg, err, red, args...) // print file and line
 }
 
 // ErrorWithLine prints log just like Error would do, but appends filename and line where it was called
-func (l *SimpleLogger) ErrorWithLine(msg string) {
-	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), err, red) // print file and line
+func (l *SimpleLogger) ErrorWithLine(msg string, args ...interface{}) {
+	l.print(fmt.Sprintf("%s -> %s", funcCaller(), msg), err, red, args...) // print file and line
 }
 
 // funcCaller returns file and line of last call.
